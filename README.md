@@ -10,6 +10,6 @@ This project is created using PHP 8.0+
 
 MIT
 
-## Copyrigh
+## Copyright
 
 2022 - fariscode
