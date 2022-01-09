@@ -1,16 +1,18 @@
 <?php
 
+namespace MY_Framework;
+
 class Database
 {
-    private PDO | null $connection;
+    private \PDO | null $connection;
 
     private $error;
 
-    private PDOStatement $stmt;
+    private \PDOStatement $stmt;
 
     private $dbconnected = false;
 
-    private $fetch_style = PDO::FETCH_ASSOC;
+    private $fetch_style = \PDO::FETCH_ASSOC;
 
     public function __construct(
         private string $host,

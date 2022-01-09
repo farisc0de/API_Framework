@@ -1,5 +1,7 @@
 <?php
 
+namespace MY_Framework;
+
 class TaskGateway
 {
     public function __construct(private Database $db)
@@ -12,7 +14,7 @@ class TaskGateway
 
         $this->db->query($sql);
 
-        $this->db->bind(":user_id", $user_id, PDO::PARAM_INT);
+        $this->db->bind(":user_id", $user_id, \PDO::PARAM_INT);
 
         $this->db->execute();
 
@@ -31,8 +33,8 @@ class TaskGateway
     {
         $this->db->query("SELECT * FROM task WHERE id = :id AND user_id = :user_id");
 
-        $this->db->bind(":id", $id, PDO::PARAM_INT);
-        $this->db->bind(":user_id", $user_id, PDO::PARAM_INT);
+        $this->db->bind(":id", $id, \PDO::PARAM_INT);
+        $this->db->bind(":user_id", $user_id, \PDO::PARAM_INT);
 
         $this->db->execute();
 
@@ -47,21 +49,23 @@ class TaskGateway
 
     public function createForUser(int $user_id, array $data): string
     {
-        $sql = "INSERT INTO task(name, priority, is_completed, user_id) VALUES (:name, :priority, :is_completed, :user_id)";
+        $sql = "INSERT INTO task(name, priority, is_completed, user_id) 
+        VALUES
+         (:name, :priority, :is_completed, :user_id)";
 
         $this->db->query($sql);
 
-        $this->db->bind(":name", $data['name'], PDO::PARAM_STR);
+        $this->db->bind(":name", $data['name'], \PDO::PARAM_STR);
 
         if (empty($data['priority'])) {
-            $this->db->bind(":priority", null, PDO::PARAM_NULL);
+            $this->db->bind(":priority", null, \PDO::PARAM_NULL);
         } else {
-            $this->db->bind(":priority", $data['priority'], PDO::PARAM_INT);
+            $this->db->bind(":priority", $data['priority'], \PDO::PARAM_INT);
         }
 
-        $this->db->bind(":is_completed", $data['is_completed'] ?? false, PDO::PARAM_BOOL);
+        $this->db->bind(":is_completed", $data['is_completed'] ?? false, \PDO::PARAM_BOOL);
 
-        $this->db->bind(":user_id", $user_id, PDO::PARAM_INT);
+        $this->db->bind(":user_id", $user_id, \PDO::PARAM_INT);
 
         $this->db->execute();
 
@@ -75,21 +79,21 @@ class TaskGateway
         if (!empty($data['name'])) {
             $fields['name'] = [
                 $data['name'],
-                PDO::PARAM_STR
+                \PDO::PARAM_STR
             ];
         }
 
         if (array_key_exists("priority", $data)) {
             $fields['priority'] = [
                 $data['priority'],
-                $data['priority'] === null ? PDO::PARAM_NULL : PDO::PARAM_INT
+                $data['priority'] === null ? \PDO::PARAM_NULL : \PDO::PARAM_INT
             ];
         }
 
         if (array_key_exists("is_completed", $data)) {
             $fields['is_completed'] = [
                 $data['is_completed'],
-                PDO::PARAM_BOOL
+                \PDO::PARAM_BOOL
             ];
         }
 
@@ -106,8 +110,8 @@ class TaskGateway
 
             $this->db->query($sql);
 
-            $this->db->bind(":id", $id, PDO::PARAM_INT);
-            $this->db->bind(":user_id", $user_id, PDO::PARAM_INT);
+            $this->db->bind(":id", $id, \PDO::PARAM_INT);
+            $this->db->bind(":user_id", $user_id, \PDO::PARAM_INT);
 
             foreach ($fields as $name => $value) {
                 $this->db->bind(":{$name}", $value[0], $value[1]);
@@ -125,8 +129,8 @@ class TaskGateway
 
         $this->db->query($sql);
 
-        $this->db->bind(":id", $id, PDO::PARAM_INT);
-        $this->db->bind(":user_id", $user_id, PDO::PARAM_INT);
+        $this->db->bind(":id", $id, \PDO::PARAM_INT);
+        $this->db->bind(":user_id", $user_id, \PDO::PARAM_INT);
 
         $this->db->execute();
 

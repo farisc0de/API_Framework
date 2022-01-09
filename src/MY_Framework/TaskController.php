@@ -1,5 +1,7 @@
 <?php
 
+namespace MY_Framework;
+
 class TaskController
 {
     public function __construct(private TaskGateway $gateway, private int $user_id)
@@ -28,7 +30,6 @@ class TaskController
                 $this->responedMethodNotAllowed(["GET", "POST"]);
             }
         } else {
-
             $task = $this->gateway->getForUser($this->user_id, $id);
 
             if ($task === false) {
@@ -41,7 +42,6 @@ class TaskController
                     echo json_encode($task);
                     break;
                 case 'PATCH':
-
                     $data = (array)json_decode(file_get_contents("php://input"), true);
 
                     $errors = $this->getValidationErrors($data, false);

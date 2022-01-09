@@ -1,5 +1,7 @@
 <?php
 
+namespace MY_Framework;
+
 class UserController
 {
     public function __construct(
@@ -72,7 +74,6 @@ class UserController
         $data = (array) json_decode(file_get_contents("php://input"), true);
 
         if (!array_key_exists("token", $data)) {
-
             http_response_code(400);
             echo json_encode(["message" => "missing token"]);
             exit;
@@ -86,8 +87,7 @@ class UserController
 
         try {
             $payload = $this->codec->decode($data["token"]);
-        } catch (Exception) {
-
+        } catch (\Exception) {
             http_response_code(400);
             echo json_encode(["message" => "invalid token"]);
             exit;
@@ -98,7 +98,6 @@ class UserController
         $user = $this->gateway->getById($user_id);
 
         if ($user === false) {
-
             http_response_code(401);
             echo json_encode(["message" => "invalid authentication"]);
             exit;
@@ -119,7 +118,6 @@ class UserController
         if (
             !array_key_exists("token", $data)
         ) {
-
             http_response_code(400);
             echo json_encode(["message" => "missing token"]);
             exit;
@@ -135,7 +133,7 @@ class UserController
 
         try {
             $codec->decode($data["token"]);
-        } catch (Exception) {
+        } catch (\Exception) {
             http_response_code(400);
             echo json_encode(["message" => "invalid token"]);
             exit;

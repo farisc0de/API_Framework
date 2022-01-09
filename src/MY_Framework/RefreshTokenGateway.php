@@ -1,5 +1,7 @@
 <?php
 
+namespace MY_Framework;
+
 class RefreshTokenGateway
 {
     public function __construct(private Database $db, private string $key)
@@ -15,8 +17,8 @@ class RefreshTokenGateway
 
         $this->db->query($sql);
 
-        $this->db->bind(":token_hash", $hash, PDO::PARAM_STR);
-        $this->db->bind(":expires_at", $expiry, PDO::PARAM_INT);
+        $this->db->bind(":token_hash", $hash, \PDO::PARAM_STR);
+        $this->db->bind(":expires_at", $expiry, \PDO::PARAM_INT);
 
         return $this->db->execute();
     }
@@ -29,7 +31,7 @@ class RefreshTokenGateway
 
         $this->db->query($sql);
 
-        $this->db->bind(":token_hash", $token_hash, PDO::PARAM_STR);
+        $this->db->bind(":token_hash", $token_hash, \PDO::PARAM_STR);
 
         $this->db->execute();
 
@@ -44,7 +46,7 @@ class RefreshTokenGateway
 
         $this->db->query($sql);
 
-        $this->db->bind(":token_hash", $token_hash, PDO::PARAM_STR);
+        $this->db->bind(":token_hash", $token_hash, \PDO::PARAM_STR);
 
         $this->db->execute();
 

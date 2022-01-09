@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 include_once __DIR__ . "/bootstrap.php";
 
+use MY_Framework\TaskController;
+use MY_Framework\Auth;
+use MY_Framework\Database;
+use MY_Framework\JWTCodec;
+use MY_Framework\TaskGateway;
+use MY_Framework\UserGateway;
+use MY_Framework\UserController;
+use MY_Framework\RefreshTokenGateway;
+
 $database = new Database(
     $_ENV['DB_HOST'],
     $_ENV['DB_NAME'],

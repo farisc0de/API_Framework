@@ -1,5 +1,7 @@
 <?php
 
+namespace MY_Framework;
+
 class UserGateway
 {
     public function __construct(private Database $db)
@@ -16,10 +18,10 @@ class UserGateway
         $password_hash = password_hash($user_date['password'], PASSWORD_BCRYPT);
         $api_key = bin2hex(random_bytes(16));
 
-        $this->db->bind(":name", $user_date['name'], PDO::PARAM_STR);
-        $this->db->bind(":username", $user_date['username'], PDO::PARAM_STR);
-        $this->db->bind(":password_hash", $password_hash, PDO::PARAM_STR);
-        $this->db->bind(":api_key", $api_key, PDO::PARAM_STR);
+        $this->db->bind(":name", $user_date['name'], \PDO::PARAM_STR);
+        $this->db->bind(":username", $user_date['username'], \PDO::PARAM_STR);
+        $this->db->bind(":password_hash", $password_hash, \PDO::PARAM_STR);
+        $this->db->bind(":api_key", $api_key, \PDO::PARAM_STR);
 
         $this->db->execute();
 
@@ -30,7 +32,7 @@ class UserGateway
     {
         $this->db->query("SELECT * FROM user WHERE api_key = :api_key");
 
-        $this->db->bind(":api_key", $key, PDO::PARAM_STR);
+        $this->db->bind(":api_key", $key, \PDO::PARAM_STR);
 
         $this->db->execute();
 
@@ -43,7 +45,7 @@ class UserGateway
 
         $this->db->query($sql);
 
-        $this->db->bind(":username", $username, PDO::PARAM_STR);
+        $this->db->bind(":username", $username, \PDO::PARAM_STR);
 
         $this->db->execute();
 

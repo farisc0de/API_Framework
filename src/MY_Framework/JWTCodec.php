@@ -1,5 +1,10 @@
 <?php
 
+namespace MY_Framework;
+
+use MY_Framework\Exceptions\InvalidSignatureException;
+use MY_Framework\Exceptions\TokenExpiredException;
+
 class JWTCodec
 {
     public function __construct(private string $key)
@@ -32,13 +37,8 @@ class JWTCodec
 
     public function decode(string $token): array
     {
-        if (preg_match(
-            "/^(?<header>.+)\.(?<payload>.+)\.(?<signature>.+)$/",
-            $token,
-            $matches
-        ) !== 1) {
-
-            throw new InvalidArgumentException("invalid token format");
+        if (preg_match("/^(?<header>.+)\.(?<payload>.+)\.(?<signature>.+)$/", $token, $matches) !== 1) {
+            throw new \InvalidArgumentException("invalid token format");
         }
 
         $signature = hash_hmac(
@@ -51,7 +51,6 @@ class JWTCodec
         $signature_from_token = $this->base64urlDecode($matches["signature"]);
 
         if (!hash_equals($signature, $signature_from_token)) {
-
             throw new InvalidSignatureException();
         }
 

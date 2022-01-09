@@ -1,8 +1,12 @@
 <?php
 
+namespace MY_Framework;
+
+use MY_Framework\Exceptions\InvalidSignatureException;
+use MY_Framework\Exceptions\TokenExpiredException;
+
 class Auth
 {
-
     private int $user_id;
 
     public function __construct(private UserGateway $user_gateway, private JWTCodec $codec)
@@ -61,7 +65,7 @@ class Auth
             http_response_code(401);
             echo json_encode(["message" => "Token has expired"]);
             return false;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             http_response_code(400);
             echo json_encode(["message" => $e->getMessage()]);
             return false;
