@@ -45,7 +45,7 @@ class Auth
             return false;
         }
 
-        if (!preg_match("/^token\s+(.*)$/", $_SERVER["HTTP_AUTHORIZATION"], $matches)) {
+        if (!preg_match("/^Bearer\s+(.*)$/", $_SERVER["HTTP_AUTHORIZATION"], $matches)) {
             http_response_code(400);
             echo json_encode(["message" => "incomplete authorization header"]);
             return false;
