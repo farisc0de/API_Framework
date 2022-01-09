@@ -2,7 +2,9 @@
 
 A PHP Framework for creating APIs
 
-![](http://jwt.io/img/badge-compatible.svg)
+<a href="http://jwt.io">
+  <img src="http://jwt.io/img/badge-compatible.svg" />
+</a>
 
 ## PHP Version
 
