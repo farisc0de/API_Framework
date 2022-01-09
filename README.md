@@ -10,6 +10,8 @@ A PHP Framework for creating APIs
 
 This project is created using PHP 8.0+
 
+Coding Standard is PSR-12
+
 ## Installation
 
 ```bash
