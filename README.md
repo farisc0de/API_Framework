@@ -12,6 +12,7 @@ This project is created using PHP 8.0+
 
 ```bash
 $ composer update
+$ composer dump-autoload
 ```
 
 Import api.sql to your phpmyadmin
