@@ -23,6 +23,17 @@ Generate 256-bit key from here [allkeysgenerator](https://www.allkeysgenerator.c
 
 Update .env file
 
+The system has 2 authentication methods
+  
+1. JWT Token [token]
+2. API Key [key]
+
+After that just create an account using /register endpoint and POST method
+
+```bash
+$ httpie post http://localhost/api/register name="Root" username="admin" password="admin"
+```
+
 Enjoy
 
 ## Example Project
