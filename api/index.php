@@ -7,7 +7,6 @@ include_once __DIR__ . "/bootstrap.php";
 use MY_Framework\TaskController;
 use MY_Framework\Auth;
 use MY_Framework\Database;
-use MY_Framework\JWTCodec;
 use MY_Framework\TaskGateway;
 use MY_Framework\UserGateway;
 use MY_Framework\UserController;
@@ -20,20 +19,6 @@ $database = new Database(
     $_ENV['DB_PASS']
 );
 
-$path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
-
-$parts = explode("/", $path);
-
-$route = $parts[2];
-
-$id = $parts[3] ?? null;
-
-$method = $_SERVER['REQUEST_METHOD'];
-
-$secret_key = $_ENV['SECRET_KEY'];
-
-$codec = new JWTCodec($secret_key);
-
 $user_gateway = new UserGateway($database);
 
 $rtg = new RefreshTokenGateway($database, $secret_key);
@@ -42,15 +27,17 @@ $user = new UserController($user_gateway, $codec, $rtg);
 
 $auth = new Auth($user_gateway, $codec);
 
-$method = $_SERVER['REQUEST_METHOD'];
+$auth_needed_routes = ["tasks"];
+
+if (in_array($route, $auth_needed_routes)) {
+    $auth->authenticate($_ENV['AUTHENTICATE_BY']);
+
+    $user_id = $auth->getUserId();
+}
 
 /** API Router */
 switch ($route) {
     case 'tasks':
-        $auth->authenticate($_ENV['AUTHENTICATE_BY']);
-
-        $user_id = $auth->getUserId();
-
         $task_gatway = new TaskGateway($database);
 
         $task_controller = new TaskController($task_gatway, $user_id);
