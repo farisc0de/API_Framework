@@ -26,7 +26,7 @@ Generate 256-bit key from here [allkeysgenerator](https://www.allkeysgenerator.c
 Update .env file
 
 The system has 2 authentication methods
-  
+
 1. JWT Token [token]
 2. API Key [key]
 
@@ -35,6 +35,12 @@ After that just create an account using /register endpoint and POST method
 ```bash
 $ httpie post http://localhost/api/register name="Root" username="admin" password="admin"
 ```
+
+or
+
+Use the example to create an account
+
+You can reuse the example for any project you want
 
 Enjoy
 
@@ -45,6 +51,8 @@ TaskController.php
 TaskGateway.php
 
 Are an example project to show how the system work
+
+Also you can reuse the code in it and change it to your specifications
 
 ## License
 
