@@ -49,7 +49,7 @@ class Database
         return $this->dbconnected;
     }
 
-    public function query(string $query): void
+    public function prepare(string $query): void
     {
         $this->stmt = $this->connection->prepare($query);
     }

@@ -15,7 +15,7 @@ class RefreshTokenGateway
         $sql = "INSERT INTO refresh_token (token_hash, expires_at)
                 VALUES (:token_hash, :expires_at)";
 
-        $this->db->query($sql);
+        $this->db->prepare($sql);
 
         $this->db->bind(":token_hash", $hash, \PDO::PARAM_STR);
         $this->db->bind(":expires_at", $expiry, \PDO::PARAM_INT);
@@ -29,7 +29,7 @@ class RefreshTokenGateway
 
         $sql = "DELETE FROM refresh_token WHERE token_hash = :token_hash";
 
-        $this->db->query($sql);
+        $this->db->prepare($sql);
 
         $this->db->bind(":token_hash", $token_hash, \PDO::PARAM_STR);
 
@@ -44,7 +44,7 @@ class RefreshTokenGateway
 
         $sql = "SELECT * FROM refresh_token WHERE token_hash = :token_hash";
 
-        $this->db->query($sql);
+        $this->db->prepare($sql);
 
         $this->db->bind(":token_hash", $token_hash, \PDO::PARAM_STR);
 
@@ -58,7 +58,7 @@ class RefreshTokenGateway
         $sql = "DELETE FROM refresh_token
                 WHERE expires_at < UNIX_TIMESTAMP()";
 
-        $this->db->query($sql);
+        $this->db->prepare($sql);
 
         $this->db->execute();
 

@@ -12,7 +12,7 @@ class TaskGateway
     {
         $sql = "SELECT * FROM task WHERE user_id = :user_id ORDER BY name";
 
-        $this->db->query($sql);
+        $this->db->prepare($sql);
 
         $this->db->bind(":user_id", $user_id, \PDO::PARAM_INT);
 
@@ -31,7 +31,7 @@ class TaskGateway
 
     public function getForUser(int $user_id, string $id): array | false
     {
-        $this->db->query("SELECT * FROM task WHERE id = :id AND user_id = :user_id");
+        $this->db->prepare("SELECT * FROM task WHERE id = :id AND user_id = :user_id");
 
         $this->db->bind(":id", $id, \PDO::PARAM_INT);
         $this->db->bind(":user_id", $user_id, \PDO::PARAM_INT);
@@ -53,7 +53,7 @@ class TaskGateway
         VALUES
          (:name, :priority, :is_completed, :user_id)";
 
-        $this->db->query($sql);
+        $this->db->prepare($sql);
 
         $this->db->bind(":name", $data['name'], \PDO::PARAM_STR);
 
@@ -108,7 +108,7 @@ class TaskGateway
 
             $sql = "UPDATE task SET {$sql_fields} WHERE id = :id AND user_id = :user_id";
 
-            $this->db->query($sql);
+            $this->db->prepare($sql);
 
             $this->db->bind(":id", $id, \PDO::PARAM_INT);
             $this->db->bind(":user_id", $user_id, \PDO::PARAM_INT);
@@ -127,7 +127,7 @@ class TaskGateway
     {
         $sql = "DELETE FROM task WHERE id = :id AND user_id = :user_id";
 
-        $this->db->query($sql);
+        $this->db->prepare($sql);
 
         $this->db->bind(":id", $id, \PDO::PARAM_INT);
         $this->db->bind(":user_id", $user_id, \PDO::PARAM_INT);

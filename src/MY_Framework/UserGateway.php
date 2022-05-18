@@ -13,7 +13,7 @@ class UserGateway
         $sql = "INSERT INTO user (name, username, password_hash, api_key)
             VALUES (:name, :username, :password_hash, :api_key)";
 
-        $this->db->query($sql);
+        $this->db->prepare($sql);
 
         $password_hash = password_hash($user_date['password'], PASSWORD_BCRYPT);
         $api_key = bin2hex(random_bytes(16));
@@ -30,7 +30,7 @@ class UserGateway
 
     public function getByApiKey(string $key): array | false
     {
-        $this->db->query("SELECT * FROM user WHERE api_key = :api_key");
+        $this->db->prepare("SELECT * FROM user WHERE api_key = :api_key");
 
         $this->db->bind(":api_key", $key, \PDO::PARAM_STR);
 
@@ -43,7 +43,7 @@ class UserGateway
     {
         $sql = "SELECT * FROM user WHERE username = :username";
 
-        $this->db->query($sql);
+        $this->db->prepare($sql);
 
         $this->db->bind(":username", $username, \PDO::PARAM_STR);
 
@@ -56,7 +56,7 @@ class UserGateway
     {
         $sql = "SELECT * FROM user WHERE id = :id";
 
-        $this->db->query($sql);
+        $this->db->prepare($sql);
 
         $this->db->bind(":id", $id);
 
