@@ -1,13 +1,15 @@
 <?php
 
-require __DIR__ . "/vendor/autoload.php";
+include_once  "../vendor/autoload.php";
 include_once '../src/MY_Framework/Database.php';
+include_once '../src/MY_Framework/UserGateway.php';
 
 use MY_Framework\Database;
+use MY_Framework\UserGateway;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv = Dotenv\Dotenv::createImmutable('../');
     $dotenv->load();
 
     $database = new Database(
@@ -17,22 +19,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_ENV["DB_PASS"]
     );
 
-    $sql = "INSERT INTO user (name, username, password_hash, api_key)
-            VALUES (:name, :username, :password_hash, :api_key)";
+    $user = new UserGateway($database);
 
-    $stmt = $database->prepare($sql);
-
-    $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
-    $api_key = bin2hex(random_bytes(16));
-
-    $database->bind(":name", $_POST["name"], PDO::PARAM_STR);
-    $database->bind(":username", $_POST["username"], PDO::PARAM_STR);
-    $database->bind(":password_hash", $password_hash, PDO::PARAM_STR);
-    $database->bind(":api_key", $api_key, PDO::PARAM_STR);
-
-    $database->execute();
+    $api_key = $user->createUser(
+        $_POST
+    );
 
     echo "Thank you for registering. Your API key is ", $api_key;
+
     exit;
 }
 
