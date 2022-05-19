@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 include_once __DIR__ . "/bootstrap.php";
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 use MY_Framework\TaskController;
 use MY_Framework\Auth;
 use MY_Framework\Database;

@@ -82,7 +82,9 @@ class Auth
             if (!$this->authenticateAccessToken()) {
                 exit;
             }
-        } elseif ($auth_by == "key") {
+        }
+
+        if ($auth_by == "key") {
             if (!$this->authenticateApiKey()) {
                 exit;
             }

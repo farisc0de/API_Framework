@@ -13,55 +13,57 @@ class UserController
 
     public function register(string $method)
     {
-        if ($method == "POST") {
-            $data = (array)json_decode(file_get_contents("php://input"), true);
-
-            $errors = $this->getValidationErrors($data, true);
-
-            if (!empty($errors)) {
-                $this->responedUnprocessableEntity($errors);
-                return;
-            }
-
-            $api_key = $this->gateway->createUser($data);
-
-            $this->responedCreated($api_key);
-        } else {
+        if ($method != "POST") {
             $this->responedMethodNotAllowed(["POST"]);
+            exit;
         }
+
+        $data = (array)json_decode(file_get_contents("php://input"), true);
+
+        $errors = $this->getValidationErrors($data, true);
+
+        if (!empty($errors)) {
+            $this->responedUnprocessableEntity($errors);
+            return;
+        }
+
+        $api_key = $this->gateway->createUser($data);
+
+        $this->responedCreated($api_key);
     }
 
     public function login(string $method)
     {
 
-        if ($method == "POST") {
-            $data = (array) json_decode(file_get_contents("php://input"), true);
-
-            $errors = $this->getValidationErrors($data);
-
-            if (!empty($errors)) {
-                $this->responedUnprocessableEntity($errors);
-                return;
-            }
-
-            $user_data = $this->gateway->getByUsername($data['username']);
-
-            if ($user_data == false) {
-                http_response_code(401);
-                echo json_encode(["message" => "Invalid authentication"]);
-                exit;
-            }
-
-            if (!password_verify($data['password'], $user_data['password_hash'])) {
-                http_response_code(401);
-                echo json_encode(["message" => "Invalid authentication"]);
-                exit;
-            }
-
-            $this->generateToken($user_data, 1);
-        } else {
+        if ($method != "POST") {
             $this->responedMethodNotAllowed(["POST"]);
+            exit;
         }
+
+        $data = (array) json_decode(file_get_contents("php://input"), true);
+
+        $errors = $this->getValidationErrors($data);
+
+        if (!empty($errors)) {
+            $this->responedUnprocessableEntity($errors);
+            return;
+        }
+
+        $user_data = $this->gateway->getByUsername($data['username']);
+
+        if ($user_data == false) {
+            http_response_code(401);
+            echo json_encode(["message" => "Invalid authentication"]);
+            exit;
+        }
+
+        if (!password_verify($data['password'], $user_data['password_hash'])) {
+            http_response_code(401);
+            echo json_encode(["message" => "Invalid authentication"]);
+            exit;
+        }
+
+        $this->generateToken($user_data, 1);
     }
 
     public function refresh(string $method)

@@ -99,28 +99,28 @@ class TaskGateway
 
         if (empty($fields)) {
             return 0;
-        } else {
-            $sets = array_map(function ($value) {
-                return "$value = :$value";
-            }, array_keys($fields));
-
-            $sql_fields = implode(", ", $sets);
-
-            $sql = "UPDATE task SET {$sql_fields} WHERE id = :id AND user_id = :user_id";
-
-            $this->db->prepare($sql);
-
-            $this->db->bind(":id", $id, \PDO::PARAM_INT);
-            $this->db->bind(":user_id", $user_id, \PDO::PARAM_INT);
-
-            foreach ($fields as $name => $value) {
-                $this->db->bind(":{$name}", $value[0], $value[1]);
-            }
-
-            $this->db->execute();
-
-            return $this->db->rowCount();
         }
+
+        $sets = array_map(function ($value) {
+            return "$value = :$value";
+        }, array_keys($fields));
+
+        $sql_fields = implode(", ", $sets);
+
+        $sql = "UPDATE task SET {$sql_fields} WHERE id = :id AND user_id = :user_id";
+
+        $this->db->prepare($sql);
+
+        $this->db->bind(":id", $id, \PDO::PARAM_INT);
+        $this->db->bind(":user_id", $user_id, \PDO::PARAM_INT);
+
+        foreach ($fields as $name => $value) {
+            $this->db->bind(":{$name}", $value[0], $value[1]);
+        }
+
+        $this->db->execute();
+
+        return $this->db->rowCount();
     }
 
     public function deleteForUser(int $user_id, string $id): int

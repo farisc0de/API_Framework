@@ -2,7 +2,7 @@
 
 namespace MY_Framework;
 
-class TaskController
+class TaskController implements BaseController
 {
     public function __construct(private TaskGateway $gateway, private int $user_id)
     {
@@ -11,23 +11,26 @@ class TaskController
     public function processRequest(string $method, ?string $id): void
     {
         if ($id == null) {
-            if ($method == "GET") {
-                echo json_encode($this->gateway->getAllForUser($this->user_id));
-            } elseif ($method == "POST") {
-                $data = (array)json_decode(file_get_contents("php://input"), true);
+            switch ($method) {
+                case 'GET':
+                    echo json_encode($this->gateway->getAllForUser($this->user_id));
+                    break;
+                case 'POST':
+                    $data = (array)json_decode(file_get_contents("php://input"), true);
 
-                $errors = $this->getValidationErrors($data);
+                    $errors = $this->getValidationErrors($data);
 
-                if (!empty($errors)) {
-                    $this->responedUnprocessableEntity($errors);
-                    return;
-                }
+                    if (!empty($errors)) {
+                        $this->responedUnprocessableEntity($errors);
+                        return;
+                    }
 
-                $id = $this->gateway->createForUser($this->user_id, $data);
+                    $id = $this->gateway->createForUser($this->user_id, $data);
 
-                $this->responedCreated($id);
-            } else {
-                $this->responedMethodNotAllowed(["GET", "POST"]);
+                    $this->responedCreated($id);
+                default:
+                    $this->responedMethodNotAllowed(["GET", "POST"]);
+                    break;
             }
         } else {
             $task = $this->gateway->getForUser($this->user_id, $id);

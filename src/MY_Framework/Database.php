@@ -67,6 +67,7 @@ class Database
     public function resultset(): array
     {
         $data = $this->stmt->fetchAll($this->fetch_style);
+
         if (is_array($data)) {
             return $data;
         }
@@ -75,6 +76,7 @@ class Database
     public function rowCount(): int
     {
         $data = $this->stmt->rowCount();
+
         if (is_int($data)) {
             return $data;
         }
@@ -84,11 +86,11 @@ class Database
     {
         $data = $this->stmt->fetch($this->fetch_style);
 
-        if (is_array($data)) {
-            return $data;
-        } else {
+        if (!is_array($data)) {
             return false;
         }
+
+        return $data;
     }
 
     public function lastInsertId(): int | false
