@@ -156,7 +156,7 @@ class UserController
         $refresh_token_expiry = time() + 432000;
         $refresh_token = $this->codec->encode([
             "sub" => $user_data['id'],
-            "exp" => time() + 432000
+            "exp" => $refresh_token_expiry
         ]);
 
         if ($operation == 2) {
